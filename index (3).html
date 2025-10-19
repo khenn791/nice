@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>MoonSec v3 & Lua Deobfuscator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>MoonSec v3 & Lua Deobfuscator</h1>
+    <form id="deobForm">
+        <label>Paste your obfuscated Lua code:</label>
+        <textarea id="codeInput" required></textarea>
+        <input type="file" id="fileInput" accept=".lua,.txt" />
+        <button type="submit">Deobfuscate</button>
+    </form>
+    <h2>Deobfuscated Output:</h2>
+    <div id="output"></div>
+</div>
+<script src="script.js"></script>
+<script>
+document.getElementById('deobForm').onsubmit = async function(e) {
+    e.preventDefault();
+    let code = document.getElementById('codeInput').value;
+    const file = document.getElementById('fileInput').files[0];
+    if (file) {
+        code = await file.text();
+    }
+    let result = "";
+    try {
+        // Assuming script.js exposes a global function called deobfuscate
+        result = window.deobfuscate(code);
+    } catch (err) {
+        result = "Error: " + err.message;
+    }
+    document.getElementById('output').textContent = result;
+};
+</script>
+</body>
+</html>
